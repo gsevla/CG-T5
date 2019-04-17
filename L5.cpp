@@ -8,11 +8,17 @@
 
 // colors
 #define white 1.0, 1.0, 1.0
-#define blue 0.35, 0.35, 0.58
+//#define blue 0.35, 0.35, 0.58
+//#define black 0.0, 0.0, 0.0
+//#define red 0.9, 0.15, 0.15
+//#define yellow 0.85, 0.75, 0.0
+//#define green 0.0, 0.75, 0.1
+#define blue 0.3, 0.3, 0.6
 #define black 0.0, 0.0, 0.0
-#define red 0.9, 0.15, 0.15
-#define yellow 0.85, 0.75, 0.0
-#define green 0.0, 0.75, 0.1
+#define red 1.0, 0.0, 0.0
+#define yellow 1.0, 1.0, 0.0
+#define green 0.0, 1.0, 0.0
+
 
 // variables
 float prop;
@@ -54,24 +60,24 @@ void drawShapes() {
 	//Circles
 	glPushMatrix();
         glTranslated(-36.0, 0.0, 0.0);
-        drawColoredCircle(1.8, 15.0, 30, 60, blue, 1.0);
+        drawColoredCircle(1.8, 15.0, 30, 45, blue, 1.0);
     glPopMatrix();
 
-	drawColoredCircle(1.8, 15.0, 30, 60, black, 1.0);
+	drawColoredCircle(1.8, 15.0, 45, 30, black, 1.0);
 
     glPushMatrix();
 		glTranslated(36.0, 0.0, 0.0);
-		drawColoredCircle(1.8, 15.0, 30, 60, red, 1.0);
+		drawColoredCircle(1.8, 15.0, 30, 45, red, 1.0);
 	glPopMatrix();
 
 	glPushMatrix();
 		glTranslated(-18.0, -15.0, 1.5);
-        drawColoredCircle(1.8, 15.0, 30, 60, yellow, 1.0);
+        drawColoredCircle(1.8, 15.0, 30, 45, yellow, 1.0);
 	glPopMatrix();
 
 	glPushMatrix();
 		glTranslated(18.0, -15.0, 1.5f);
-		drawColoredCircle(1.8, 15.0, 30, 60, green, 1.0);
+		drawColoredCircle(1.8, 15.0, 30, 45, green, 1.0);
 	glPopMatrix();
 
 	glutSwapBuffers();
@@ -93,7 +99,7 @@ void reshape(int x, int y) {
     //std::cout << prop << std::endl;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective( 30, prop, 0.2, 600 );
+    gluPerspective(30, prop, 0.2, 600);
     glViewport(0, 0, x, y);
     observer();
 }
@@ -105,30 +111,33 @@ void observer() {
     ilumination();
 
     gluLookAt(
-        0,45,150,
-        0,0,0,
-        0,120,0
+        0,-30,150,   /* eye */
+        0,0,0,      /* look */
+        0,15,0     /* up */
 	);
 }
 
 void ilumination()
 {
 
-    GLfloat luzEspecular[4] = {1.0, 1.0, 1.0, 1.0};
-	GLfloat luzAmbiente[4] = {0.2, 0.2 ,0.2, 1.0};
-	GLfloat luzDifusa[4] = {0.6, 0.6, 0.6, 1.0};
-	GLfloat luzPos[4] = {0.0, 60.0, 90.0, 1.0};
-
-	GLint especMaterial = 60;
-	GLfloat especularidade[4] = {1.0, 1.0, 1.0, 1.0};
-
-	glMaterialfv(GL_FRONT, GL_SPECULAR, especularidade);
-	glMateriali(GL_FRONT, GL_SHININESS, especMaterial);
-
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+	GLfloat luzAmbiente[4] = {0.1, 0.1, 0.1, 1.0}; /* cor azul */
+	GLfloat luzDifusa[4] = {0.65, 0.65,0.65, 1.0}; /* cor branca */
+    GLfloat luzEspecular[4] = {1.0, 1.0, 1.0, 1.0}; /* cor branca - brilho */
+	GLfloat luzPos[4] = {0.0, 60.0, 60.0, 0.2}; /* Fonte de Luz Pontual */
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
 	glLightfv(GL_LIGHT0, GL_POSITION, luzPos);
+	
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+
+	GLint brilho = 45;
+	glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, brilho); /* Concentração do brilho */
+    GLfloat kd[4]={0.5, 0.5, 0.5, 1.0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, kd); /* Reflete porcentagens da cor difusa */
+	GLfloat ks[4] = {1.0, 1.0, 1.0, 1.0};
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, ks); /* Refletância do material */
+
+
 }
