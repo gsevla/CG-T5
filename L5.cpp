@@ -8,11 +8,6 @@
 
 // colors
 #define white 1.0, 1.0, 1.0
-//#define blue 0.35, 0.35, 0.58
-//#define black 0.0, 0.0, 0.0
-//#define red 0.9, 0.15, 0.15
-//#define yellow 0.85, 0.75, 0.0
-//#define green 0.0, 0.75, 0.1
 #define blue 0.3, 0.3, 0.6
 #define black 0.0, 0.0, 0.0
 #define red 1.0, 0.0, 0.0
